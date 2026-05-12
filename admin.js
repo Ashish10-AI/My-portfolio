@@ -27,6 +27,7 @@ function checkAuthState() {
     if (user) {
       console.log('✓ Admin logged in:', user.email);
       enableAdminMode();
+      loadPortfolioImages();
     } else {
       disableAdminMode();
     }
