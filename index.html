@@ -5634,6 +5634,38 @@
           <input type="checkbox" id="form-featured" />
           <label for="form-featured">Featured on main page (show as category card)</label>
         </div>
+                            <!-- IMAGE UPLOAD SECTION -->
+            <div style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+              <h3>Upload Portfolio Images</h3>
+              
+              <div style="margin-bottom: 15px;">
+                <label for="imageTitle">Image Title:</label><br>
+                <input type="text" id="imageTitle" placeholder="e.g., Project 1" style="width: 100%; padding: 8px; margin-top: 5px;">
+              </div>
+    
+              <div style="margin-bottom: 15px;">
+                <label for="imageDescription">Image Description:</label><br>
+                <input type="text" id="imageDescription" placeholder="e.g., Web Design for Client" style="width: 100%; padding: 8px; margin-top: 5px;">
+              </div>
+    
+              <div style="margin-bottom: 15px;">
+                <label for="imageFile">Select Image:</label><br>
+                <input type="file" id="imageFile" accept="image/*" style="margin-top: 5px;">
+              </div>
+    
+              <button onclick="uploadImageToFirestore()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Upload Image
+              </button>
+              <span id="uploadStatus" style="margin-left: 10px; color: green;"></span>
+            </div>
+    
+            <!-- DISPLAY UPLOADED IMAGES SECTION -->
+            <div style="margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+              <h3>Your Uploaded Images</h3>
+              <div id="imagesContainer" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                <!-- Images will appear here -->
+              </div>
+            </div>
         <button type="submit" class="admin-submit-btn" id="form-submit-btn">Add Project</button>
       </form>
     </div>
