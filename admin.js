@@ -774,3 +774,144 @@ if (document.readyState === 'loading') {
 } else {
   initAdminSystem();
 }
+// ===== BASE64 IMAGE UPLOAD FUNCTION =====
+
+function uploadImageToFirestore() {
+  const fileInput = document.getElementById('imageFile');
+  const titleInput = document.getElementById('imageTitle');
+  const descriptionInput = document.getElementById('imageDescription');
+  const statusDiv = document.getElementById('uploadStatus');
+
+  if (!fileInput.files || !fileInput.files[0]) {
+    statusDiv.textContent = '❌ Please select an image first';
+    statusDiv.style.color = 'red';
+    return;
+  }
+
+  if (!titleInput.value.trim()) {
+    statusDiv.textContent = '❌ Please enter an image title';
+    statusDiv.style.color = 'red';
+    return;
+  }
+
+  if (!descriptionInput.value.trim()) {
+    statusDiv.textContent = '❌ Please enter an image description';
+    statusDiv.style.color = 'red';
+    return;
+  }
+
+  if (typeof db === 'undefined') {
+    statusDiv.textContent = '❌ Firestore not loaded. Refresh page.';
+    statusDiv.style.color = 'red';
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  statusDiv.textContent = '⏳ Uploading...';
+  statusDiv.style.color = 'orange';
+
+  reader.onload = function(event) {
+    const base64String = event.target.result;
+
+    db.collection('portfolioImages').add({
+      title: titleInput.value.trim(),
+      description: descriptionInput.value.trim(),
+      imageData: base64String,
+      uploadedAt: new Date(),
+      uploadedBy: auth.currentUser.email
+    })
+    .then(() => {
+      statusDiv.textContent = '✅ Image uploaded successfully!';
+      statusDiv.style.color = 'green';
+
+      fileInput.value = '';
+      titleInput.value = '';
+      descriptionInput.value = '';
+
+      loadPortfolioImages();
+    })
+    .catch((error) => {
+      statusDiv.textContent = '❌ Upload failed: ' + error.message;
+      statusDiv.style.color = 'red';
+      console.error('Upload error:', error);
+    });
+  };
+
+  reader.onerror = function() {
+    statusDiv.textContent = '❌ Failed to read file';
+    statusDiv.style.color = 'red';
+  };
+
+  reader.readAsDataURL(file);
+}
+
+// ===== LOAD AND DISPLAY IMAGES FUNCTION =====
+
+function loadPortfolioImages() {
+  const container = document.getElementById('imagesContainer');
+
+  if (typeof db === 'undefined') {
+    console.error('Firestore not loaded');
+    return;
+  }
+
+  container.innerHTML = '';
+
+  db.collection('portfolioImages')
+    .orderBy('uploadedAt', 'desc')
+    .onSnapshot((snapshot) => {
+      if (snapshot.empty) {
+        container.innerHTML = '<p>No images uploaded yet</p>';
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        const imageData = doc.data();
+        const docId = doc.id;
+
+        const imageCard = document.createElement('div');
+        imageCard.style.cssText = 'border: 1px solid #ddd; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);';
+
+        imageCard.innerHTML = `
+          <img src="${imageData.imageData}" style="width: 100%; height: 150px; object-fit: cover;">
+          <div style="padding: 10px;">
+            <h4 style="margin: 0 0 5px; font-size: 14px;">${imageData.title}</h4>
+            <p style="margin: 0 0 5px; font-size: 12px; color: #666;">${imageData.description}</p>
+            <p style="margin: 0 0 10px; font-size: 11px; color: #999;">
+              ${imageData.uploadedAt.toDate().toLocaleDateString()}
+            </p>
+            <button onclick="deletePortfolioImage('${docId}')" style="width: 100%; padding: 8px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">
+              Delete
+            </button>
+          </div>
+        `;
+
+        container.appendChild(imageCard);
+      });
+    });
+}
+
+// ===== DELETE IMAGE FUNCTION =====
+
+function deletePortfolioImage(docId) {
+  if (!confirm('Are you sure you want to delete this image?')) {
+    return;
+  }
+
+  if (typeof db === 'undefined') {
+    alert('Firestore not loaded');
+    return;
+  }
+
+  db.collection('portfolioImages').doc(docId).delete()
+    .then(() => {
+      console.log('Image deleted successfully');
+      loadPortfolioImages();
+    })
+    .catch((error) => {
+      alert('Error deleting image: ' + error.message);
+      console.error('Delete error:', error);
+    });
+}
