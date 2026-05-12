@@ -1,0 +1,44 @@
+{
+  "name": "ashish-portfolio",
+  "version": "2.0.0",
+  "description": "Enterprise-grade portfolio website for Ashish - Creative Technologist",
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ashish10-AI/portfolio"
+  },
+  "keywords": [
+    "portfolio",
+    "web-design",
+    "video-editing",
+    "freelancer",
+    "creative-technologist"
+  ],
+  "author": "Ashish",
+  "license": "proprietary",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8080",
+    "lighthouse": "lighthouse index.html --view",
+    "build": "echo 'Static site - no build required'",
+    "deploy-vercel": "vercel deploy --prod",
+    "deploy-netlify": "netlify deploy --prod",
+    "test": "npm run lighthouse",
+    "format": "prettier --write .",
+    "validate-seo": "npm run lighthouse"
+  },
+  "devDependencies": {
+    "lighthouse": "^11.0.0",
+    "prettier": "^3.0.0",
+    "vercel": "^32.0.0",
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

@@ -1,0 +1,30 @@
+# robots.txt for Ashish Portfolio
+# Last modified: 2025-05-04
+
+# Allow all crawlers by default
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /*?*sort=
+
+# Sitemap location
+Sitemap: https://ashish-portfolio.com/sitemap.xml
+
+# Crawl delay (ms) - respect server resources
+Crawl-delay: 1
+Request-rate: 30/60
+
+# Specific bot rules
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Crawl-delay: 10
