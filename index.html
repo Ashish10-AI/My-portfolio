@@ -4473,48 +4473,54 @@
   </style>
 </head>
   <script>
+  // 1. Keep this variable global so admin.js can access it
   let projectImageBase64 = "";
-  
-  // IMAGE INPUT
-  const imageInput = document.getElementById("form-image-file");
-  
-  // PREVIEW DIV
-  const previewDiv = document.getElementById("form-image-preview");
-  
-  // WHEN IMAGE SELECTED
-  imageInput.addEventListener("change", function () {
-  
-    const file = this.files[0];
-  
-    if (!file) return;
-  
-    const reader = new FileReader();
-  
-    reader.onload = function (event) {
-  
-      // STORE BASE64
-      projectImageBase64 = event.target.result;
-  
-      // SHOW PREVIEW
-      previewDiv.innerHTML = `
-        <img
-          src="${projectImageBase64}"
-          style="
-            width:100%;
-            max-width:250px;
-            margin-top:15px;
-            border-radius:12px;
-            border:2px solid #d4af37;
-            object-fit:cover;
-          "
-        />
-      `;
-    };
-  
-    // CONVERT TO BASE64
-    reader.readAsDataURL(file);
+
+  // 2. Wait for the HTML elements to load before executing
+  document.addEventListener("DOMContentLoaded", function () {
+    
+    // IMAGE INPUT
+    const imageInput = document.getElementById("form-image-file");
+    // PREVIEW DIV
+    const previewDiv = document.getElementById("form-image-preview");
+
+    if (imageInput && previewDiv) {
+      // WHEN IMAGE SELECTED
+      imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          // STORE BASE64
+          projectImageBase64 = event.target.result;
+
+          // 3. UNHIDE THE PREVIEW DIV! (Crucial fix)
+          previewDiv.style.display = "block";
+
+          // SHOW PREVIEW
+          previewDiv.innerHTML = `
+            <img
+              src="${projectImageBase64}"
+              style="
+                width:100%;
+                max-width:250px;
+                margin-top:15px;
+                border-radius:12px;
+                border:2px solid #d4af37;
+                object-fit:cover;
+              "
+            />
+          `;
+        };
+
+        // CONVERT TO BASE64
+        reader.readAsDataURL(file);
+      });
+    }
   });
-  </script>
+</script>
 <body>
 
   <!-- LOADER -->
