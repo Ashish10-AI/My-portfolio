@@ -4472,7 +4472,49 @@
     }
   </style>
 </head>
-
+  <script>
+  let projectImageBase64 = "";
+  
+  // IMAGE INPUT
+  const imageInput = document.getElementById("form-image-file");
+  
+  // PREVIEW DIV
+  const previewDiv = document.getElementById("form-image-preview");
+  
+  // WHEN IMAGE SELECTED
+  imageInput.addEventListener("change", function () {
+  
+    const file = this.files[0];
+  
+    if (!file) return;
+  
+    const reader = new FileReader();
+  
+    reader.onload = function (event) {
+  
+      // STORE BASE64
+      projectImageBase64 = event.target.result;
+  
+      // SHOW PREVIEW
+      previewDiv.innerHTML = `
+        <img
+          src="${projectImageBase64}"
+          style="
+            width:100%;
+            max-width:250px;
+            margin-top:15px;
+            border-radius:12px;
+            border:2px solid #d4af37;
+            object-fit:cover;
+          "
+        />
+      `;
+    };
+  
+    // CONVERT TO BASE64
+    reader.readAsDataURL(file);
+  });
+  </script>
 <body>
 
   <!-- LOADER -->
