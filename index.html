@@ -5667,8 +5667,10 @@
         </div>
         <div class="admin-form-group">
           <label for="form-image-file">Project Image</label>
-          <input type="file" id="form-image-file" accept="image/jpeg,image/png,image/webp,image/gif" />
-          <div id="form-image-preview"></div>
+          <input type="file" id="form-image-file" accept="image/*" />
+          <span class="admin-form-help">Choose a photo from your computer. It will show up below.</span>
+          
+          <div id="form-image-preview" style="margin-top: 15px; display: none;"></div>
         </div>
         <div class="admin-form-group">
           <label>Tools / Technologies</label>
