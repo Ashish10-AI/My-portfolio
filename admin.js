@@ -329,38 +329,13 @@ function handleProjectSubmit(e) {
   // Check if there's a new image to upload
   var file = fileInput && fileInput.files[0];
 
-  if (file) {
-    // Upload image first, then save project
-    return uploadProjectImage(file, editingProjectId || 'new')
-      .then(function (imageUrl) {
-        projectData.imageUrl = imageUrl;
-        return saveProject(projectData);
-      })
-      .catch(function (error) {
-        console.error('Upload error:', error);
-        showToast('Image upload failed: ' + error.message, 'error');
-        submitBtn.disabled = false;
-        submitBtn.textContent = editingProjectId ? 'Save Changes' : 'Add Project';
-      });
-  } else {
-    // No new image — save directly
-    if (editingProjectId) {
-      // Keep existing image URL for edits
-      var existing = allProjects.find(function (p) { return p.id === editingProjectId; });
-      if (existing && existing.imageUrl) {
-        // Check if user cleared the image
-        var preview = document.getElementById('form-image-preview');
-        if (preview && preview.innerHTML.trim() !== '') {
-          projectData.imageUrl = existing.imageUrl;
-        } else {
-          projectData.imageUrl = null;
-        }
-      }
-    }
-    return saveProject(projectData);
-  }
+ if (projectImageBase64) {
+
+  // Save base64 image directly
+  projectData.imageUrl = projectImageBase64;
 }
 
+return saveProject(projectData);
 /**
  * Save project to Firestore (create or update).
  */
