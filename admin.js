@@ -336,6 +336,8 @@ function handleProjectSubmit(e) {
 }
 
 return saveProject(projectData);
+}
+
 /**
  * Save project to Firestore (create or update).
  */
