@@ -4307,11 +4307,15 @@
         grid-template-columns: 1fr;
       }
 
-      .hv,
       .abvis {
         display: none;
       }
-
+      .hv {
+        display: block;
+        margin: 40px auto 0 auto;
+        max-width: 320px;
+        width: 100%;
+      }
       .pjgrid {
         grid-template-columns: 1fr;
       }
@@ -4469,6 +4473,39 @@
       background: var(--bg1);
       border-color: var(--purple);
       box-shadow: 0 0 0 3px var(--purple-g);
+    }
+        /* --- ADMIN MOBILE UI FIXES --- */
+    @media (max-width: 768px) {
+      /* 1. Reduce padding so inputs have more horizontal room */
+      .admin-modal {
+        padding: 20px !important;
+        width: 95% !important;
+      }
+    
+      /* 2. Make side-by-side inputs (like Category/Order) stack vertically */
+      .admin-form-row {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+      }
+    
+      /* 3. Fix the 'Your Uploaded Images' section you added */
+      #imagesContainer {
+        grid-template-columns: 1fr 1fr !important; /* Show 2 images per row on mobile instead of 1 */
+        gap: 10px !important;
+      }
+    
+      /* 4. Adjust the Close button so it doesn't overlap text */
+      .modal-close-top {
+        top: 10px !important;
+        right: 10px !important;
+        width: 28px !important;
+        height: 28px !important;
+      }
+    
+      .admin-modal h2 {
+        font-size: 20px !important;
+        padding-right: 30px; /* Room for the X button */
+      }
     }
   </style>
 </head>
